@@ -1,10 +1,11 @@
 import { randomUUID } from "node:crypto"
+import { Slug } from "./value-objects/slug"
 
 interface QuestionProps {
     title: string,
     content: string,
     authorId: string,
-    slug: string
+    slug: Slug
 }
 
 export class Question {
@@ -12,7 +13,7 @@ export class Question {
     public content: string
     public id: string
     public authorId: string
-    public slug: string
+    public slug: Slug
 
     constructor(props: QuestionProps, id?: string) {
         this.title = props.title
