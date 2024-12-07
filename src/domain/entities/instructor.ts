@@ -1,7 +1,6 @@
-import { Entity } from "@/core/entities/entity";
+import { Entity } from '@/core/entities/entity'
 
 interface InstructorProps {
-    name: string;
+  name: string
 }
-export class Instructor extends Entity<InstructorProps> {
-}
+export class Instructor extends Entity<InstructorProps> {}
