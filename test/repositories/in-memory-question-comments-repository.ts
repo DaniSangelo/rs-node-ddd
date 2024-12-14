@@ -9,4 +9,13 @@ export class InMemoryQuestionCommentsRepository
   async create(question: any) {
     this.items.push(question)
   }
+
+  async findById(id: string): Promise<QuestionComment | null> {
+    return this.items.find((item) => item.id.toString() === id) ?? null
+  }
+
+  async delete(question: QuestionComment): Promise<void> {
+    const index = this.items.findIndex((item) => item.id === question.id)
+    this.items.splice(index, 1)
+  }
 }
