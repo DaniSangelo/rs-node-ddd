@@ -3,12 +3,17 @@ import { Question } from '../../enterprise/entities/question'
 import { QuestionsRepository } from '../repositories/questions-repository'
 import { NotAllowedError } from './errors/not-allowed-error'
 import { ResourceNotFoundError } from './errors/resource-not-found-error'
+import { QuestionAttachmentsRepository } from '../repositories/question-attachments-repository'
+import { QuestionAttachmentList } from '../../enterprise/entities/question-attachment-list'
+import { QuestionAttachment } from '../../enterprise/entities/question-attachment'
+import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 
 interface EditQuestionUseCaseRequest {
   authorId: string
   title: string
   content: string
   questionId: string
+  attachmentsIds?: string[]
 }
 
 type EditQuestionUseCaseResponse = Either<
@@ -19,12 +24,17 @@ type EditQuestionUseCaseResponse = Either<
 >
 
 export class EditQuestionUseCase {
-  constructor(private questionsRepository: QuestionsRepository) {}
+  constructor(
+    private questionsRepository: QuestionsRepository,
+    private questionAttachmentRepository: QuestionAttachmentsRepository,
+  ) {}
+
   async execute({
     authorId,
     title,
     content,
     questionId,
+    attachmentsIds,
   }: EditQuestionUseCaseRequest): Promise<EditQuestionUseCaseResponse> {
     const question = await this.questionsRepository.findById(questionId)
 
@@ -34,6 +44,23 @@ export class EditQuestionUseCase {
 
     if (question.authorId.toString() !== authorId) {
       return left(new NotAllowedError())
+    }
+
+    if (attachmentsIds) {
+      const currentAttachments =
+        await this.questionAttachmentRepository.findManyByQuestionId(questionId)
+
+      const attachmentList = new QuestionAttachmentList(currentAttachments)
+
+      const questionAttachments = attachmentsIds.map((attachmentId) => {
+        return QuestionAttachment.create({
+          attachmentId: new UniqueEntityID(attachmentId),
+          questionId: question.id,
+        })
+      })
+
+      attachmentList.update(questionAttachments)
+      question.attachments = attachmentList
     }
 
     question.title = title
