@@ -8,13 +8,18 @@ import { makeAnswerAttachment } from 'test/factories/make-answer-attachment'
 
 let inMemoryAnswersRepository: InMemoryAnswersRepository
 let inMemoryAnswerAttachmentRepository: InMemoryAnswerAttachmentsRepository
+let inMemoryAnswerAttachemtnRepository: InMemoryAnswerAttachmentsRepository
 let sut: EditAnswerUseCase
 
 describe('Edit answer use case', () => {
   beforeEach(() => {
+    inMemoryAnswerAttachemtnRepository =
+      new InMemoryAnswerAttachmentsRepository()
     inMemoryAnswerAttachmentRepository =
       new InMemoryAnswerAttachmentsRepository()
-    inMemoryAnswersRepository = new InMemoryAnswersRepository()
+    inMemoryAnswersRepository = new InMemoryAnswersRepository(
+      inMemoryAnswerAttachemtnRepository,
+    )
     sut = new EditAnswerUseCase(
       inMemoryAnswersRepository,
       inMemoryAnswerAttachmentRepository,
