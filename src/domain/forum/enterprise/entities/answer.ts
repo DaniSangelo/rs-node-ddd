@@ -9,7 +9,7 @@ export interface AnswerProps {
   content: string
   createdAt: Date
   updatedAt?: Date
-  attachments: AnswerAttachmentList[]
+  attachments: AnswerAttachmentList
 }
 
 export class Answer extends Entity<AnswerProps> {
@@ -29,7 +29,7 @@ export class Answer extends Entity<AnswerProps> {
     return this.props.attachments
   }
 
-  set attachments(attachments: AnswerAttachmentList[]) {
+  set attachments(attachments: AnswerAttachmentList) {
     this.props.attachments = attachments
     this.touch()
   }

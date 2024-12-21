@@ -8,7 +8,7 @@ import { QuestionAttachmentList } from './question-attachment-list'
 export interface QuestionProps {
   authorId: UniqueEntityID
   bestAnswerId?: UniqueEntityID
-  attachments: QuestionAttachmentList[]
+  attachments: QuestionAttachmentList
   title: string
   content: string
   slug: Slug
@@ -49,7 +49,7 @@ export class Question extends AggregateRoot<QuestionProps> {
     return this.props.attachments
   }
 
-  set attachments(attachments: QuestionAttachmentList[]) {
+  set attachments(attachments: QuestionAttachmentList) {
     this.props.attachments = attachments
     this.touch()
   }
