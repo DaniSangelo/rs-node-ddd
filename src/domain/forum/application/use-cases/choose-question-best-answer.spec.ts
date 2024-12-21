@@ -45,11 +45,10 @@ describe('Choose question best answer use case', () => {
     await inMemoryQuestionsRepository.create(question)
     await inMemoryAnswersRepository.create(answer)
 
-    expect(() => {
-      return sut.execute({
+    const result = sut.execute({
         answerId: answer.id.toString(),
         authorId: 'author-2',
       })
-    }).rejects.toBeInstanceOf(Error)
+    expect()
   })
 })

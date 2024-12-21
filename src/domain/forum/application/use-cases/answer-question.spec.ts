@@ -11,7 +11,7 @@ describe('Create answer use case', () => {
   })
 
   it('should be able to create an answer', async () => {
-    const { answer } = await sut.execute({
+    const answer = await sut.execute({
       content: 'Nova resposta',
       instructorId: '1',
       questionId: '1',
