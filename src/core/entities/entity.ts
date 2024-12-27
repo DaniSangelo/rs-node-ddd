@@ -12,4 +12,12 @@ export class Entity<T> {
     this.props = props
     this.#id = id ?? new UniqueEntityID(id)
   }
+
+  public equals(entity: Entity<T>): boolean {
+    if (entity === this) {
+      return true
+    }
+
+    return entity.id === this.#id
+  }
 }
